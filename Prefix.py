@@ -2,7 +2,8 @@ import requests
 import json
 
 url = "http://challenge.code2040.org/api/prefix"
-data = {'token': 'cc58efad8d51fde5172b3d5e5ec94cfb'}
+API_TOKEN = 'cc58efad8d51fde5172b3d5e5ec94cfb'
+data = {'token': API_TOKEN}
 
 r = requests.post(url, data).json()
 
@@ -12,21 +13,21 @@ arrayStr = r["array"]
 def find_all_with_prefix(prefix, arrayStr) :
     building_array = []
     prefixLen = len(prefix)
-    for val in range(len(arrayStr)):
-        if len(arrayStr[val]) < prefixLen:
-            continue
-        if arrayStr[val][:prefixLen] == prefix:
-            building_array.append(unicode(arrayStr[val]))
+    for i in range(0, len(arrayStr)):
+        if arrayStr[i].startswith(prefix) == False:
+            building_array.append(arrayStr[i])
     return building_array
 
 prefix_array = find_all_with_prefix(prefix, arrayStr)
-prefix_array = json.dumps(prefix_array)
 
-
-returnData = {'token': 'cc58efad8d51fde5172b3d5e5ec94cfb',
-'array': prefix_array}
+returnData = {}
+returnData['token'] = API_TOKEN
+returnData['array'] = prefix_array
 
 r = requests.post("http://challenge.code2040.org/api/prefix/validate",
-returnData)
+json = returnData)
 
-print(r)
+print(r.text)
+print(prefix)
+print(arrayStr)
+print(prefix_array)
